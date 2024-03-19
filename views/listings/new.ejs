@@ -1,0 +1,100 @@
+<% layout("/layouts/boilerplate.ejs") -%>
+<body>
+   <div class="row mt-3"> 
+     <div class="col-8 offset-2">
+
+  <h3>Create a New Listing</h3>
+
+  <form method="POST" action="/listings" novalidate class="needs-validation" enctype="multipart/form-data">
+    <div class="mb-3">
+      <label for="title" class="form-label">Title</label> 
+      <input name="listing[title]"  class="form-control" placeholder="Add a catchy title" required type="text" />
+      <div class="invalid-feedback" > Please enter Title </div>
+    </div>
+
+
+    <div class="mb-3">
+      <label for="description" class="form-label">Description</label> 
+    <textarea
+      name="listing[description]"
+      required
+      class="form-control"
+      ></textarea>
+      <div class="invalid-feedback"> Please enter a short description </div>
+
+    </div>
+
+    <div class="mb-3">
+       <label for="image" class="form-label">Upload Image</label>
+       <input
+         name="listing[url]"
+         class="form-control"
+         type="file"
+       />
+     </div>
+    <div class="row">
+    <div class="mb-3 col-md-4">
+      <label for="price" class="form-label">Price</label> 
+       <input name="listing[price]" class="form-control" placeholder="1000"  required/>
+      <div class="invalid-feedback" > Please enter valid price</div>
+    </div>
+
+   <div class="mb-3 col-md-8">
+      <label for="country" class="form-label">Country</label> 
+      <input name="listing[country]" class="form-control" placeholder="INDIA" type="text" required />
+      <div class="invalid-feedback" > Please enter country name</div>
+   </div>
+      </div>
+
+
+    <div class="mb-3">
+      <label for="location" class="form-label">Location</label>
+    <input
+      name="listing[location]"
+      type="text"
+      required
+     placeholder="Mumbai, Maharashtra"
+    />
+       <div class="invalid-feedback" > Please enter location</div>
+    </div>
+
+    <div class="mb-3">
+        <input type="hidden" name="listing[category]" id="categoryInput" value="" />
+        <select class="form-select" aria-label="Default select example" onchange="updateCategoryInput()">
+            <option selected>Select category</option>
+            <option value="trending">Trending</option>
+            <option value="mountain">Mountain</option>
+            <option value="iconic city">Iconic city</option>
+            <option value="dome">Dome</option>
+            <option value="rooms">Rooms</option>
+            <option value="desert">Desert</option>
+            <option value="forest">Forest</option>
+            <option value="village">Village</option>
+            <option value="arctic">Arctic</option>
+            <option value="boat">Boat</option>
+            <option value="beach">Beach</option>
+        </select>
+    </div>
+
+    <button class="btn btn-dark add-btn ">Add</button>
+    <br>
+     <br><br>
+  </form>
+     </div>
+    </div>
+  <script>
+    document.querySelectorAll('.dropdown-item').forEach(item => {
+      item.addEventListener('click', () => {
+        const category = item.getAttribute('data-category');
+        document.querySelector('#categoryInput').value = category;
+      });
+    });
+
+    function updateCategoryInput() {
+            var selectElement = document.querySelector('.form-select');
+            var selectedCategory = selectElement.options[selectElement.selectedIndex].value;
+            document.getElementById('categoryInput').value = selectedCategory;
+        }
+  </script>
+
+</body>
