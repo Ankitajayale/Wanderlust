@@ -15,7 +15,6 @@
     "@mapbox/mapbox-sdk": "^0.15.5",
     "@types/node": "^18.0.6",
     "body-parser": "^1.20.2",
-    "cloudinary": "^2.0.3",
     "connect-flash": "^0.1.1",
     "connect-mongo": "^5.1.0",
     "cors": "^2.8.5",
