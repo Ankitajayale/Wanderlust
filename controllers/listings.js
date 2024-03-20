@@ -12,8 +12,8 @@ module.exports.categorized = async (req, res) => {
   let { category } = req.query;
   const categorizedListings = await Listing.find({ category: category });
   if (!categorizedListings || categorizedListings.length === 0) {
-    req.flash("error", "Airbnb for requested category does not exist!!");
-    res.redirect("/listings");
+    req.flash("error", "Listing for requested category does not exist!!");
+    return res.redirect("/listings");
   }
   res.render("listings/category.ejs", { categorizedListings });
 };
@@ -22,8 +22,8 @@ module.exports.getCountry = async (req, res) => {
   let { country } = req.query;
   const allListings = await Listing.find({ country: country });
   if (!allListings || allListings.length === 0) {
-    req.flash("error", "Airbnb for requested place does not exist!!");
-    res.redirect("/listings");
+    req.flash("error", "Listing for requested place does not exist!!");
+    return res.redirect("/listings");
   }
   res.render("listings/index.ejs", { allListings });
 };
@@ -82,7 +82,16 @@ module.exports.edit = async (req, res) => {
 
 module.exports.update = async (req, res) => {
   let { id } = req.params;
-  let listing = await Listing.findByIdAndUpdate(id, { ...req.body.listing });
+  let response = await geocodingClient
+    .forwardGeocode({
+      query: req.body.listing.location,
+      limit: 1,
+    })
+    .send();
+  let listing = await Listing.findByIdAndUpdate(id, {
+    ...req.body.listing,
+    geometry: response.body.features[0].geometry,
+  });
   if (typeof req.file !== "undefined") {
     let image = req.file.path;
     let filename = req.file.filename;
